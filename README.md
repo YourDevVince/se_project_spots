@@ -6,7 +6,7 @@ An image sharing site.
 
 This is a image sharing site where users can edit their information and add photos.
 
-Marvel at its beauty
+Marvel at it's beauty
 
 ![Image of Spots page.](./images/spots-page.png)
 
