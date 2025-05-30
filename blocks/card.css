@@ -10,7 +10,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 12px 0;
+  margin: 12px 0 0;
 }
 
 .card__title {
@@ -22,6 +22,7 @@
   white-space: nowrap;
   overflow: hidden;
   max-width: 353px;
+  color: #212121;
 }
 
 .card__like-btn {
@@ -33,6 +34,7 @@
   opacity: 40%;
   margin: 0;
   transition: opacity 0.3s ease;
+  cursor: pointer;
 }
 
 .card__like-btn:hover {
