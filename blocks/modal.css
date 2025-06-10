@@ -40,6 +40,11 @@
   cursor: pointer;
   padding: 0;
   opacity: 0.4;
+  transition: opacity 0.3s ease;
+}
+
+.modal__close-btn:hover {
+  opacity: 1;
 }
 
 .modal__title {
@@ -77,6 +82,11 @@
   color: #212121;
 }
 
+.modal__input:hover {
+  border-color: #212121;
+  cursor: pointer;
+}
+
 .modal__save-btn {
   max-width: 156px;
   width: 100%;
@@ -89,6 +99,10 @@
   border-radius: 8px;
   border: none;
   cursor: pointer;
+}
+
+.modal__save-btn:hover {
+  opacity: 80%;
 }
 
 .modal__input::placeholder {
