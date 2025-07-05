@@ -80,6 +80,7 @@
   font-weight: 500;
   line-height: 1.1;
   color: #212121be;
+  display: block;
 }
 
 .modal__input {
@@ -96,9 +97,23 @@
   color: #212121;
 }
 
+.modal__input_type_error {
+  border: 1px solid rgba(255, 0, 0, 0.6);
+  opacity: 0.6;
+}
+
 .modal__input:hover {
   border-color: #212121;
   cursor: pointer;
+}
+
+.modal__error {
+  display: block;
+  margin-top: 8px;
+  font-size: 16px;
+  line-height: 1.1;
+  color: #ff0000;
+  opacity: 0.7;
 }
 
 .modal__save-btn {
@@ -117,6 +132,11 @@
 
 .modal__save-btn:hover {
   opacity: 80%;
+}
+
+.modal__save-btn_disabled {
+  background-color: #21212180;
+  cursor: not-allowed;
 }
 
 .modal__input::placeholder {
