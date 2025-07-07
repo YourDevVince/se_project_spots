@@ -47,7 +47,7 @@
   transition: opacity 0.3s ease;
 }
 
-.modal__close_type_preview {
+.modal__close-btn_type_preview {
   top: 0;
   right: -52.5px;
   opacity: 1;
