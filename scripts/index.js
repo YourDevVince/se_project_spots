@@ -172,11 +172,9 @@ function handleAddCardSubmit(evt) {
   cardList.prepend(cardElement);
 
   disableButton(newPostSubmitBtn, settings);
-  closeModal(newPostModal);
-
   newPostForm.reset();
-
   resetValidation(newPostForm, [newPostNameInput, newPostLinkInput], settings);
+  closeModal(newPostModal);
 }
 newPostForm.addEventListener("submit", handleAddCardSubmit);
 
