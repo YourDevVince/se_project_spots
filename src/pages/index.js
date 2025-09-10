@@ -7,6 +7,7 @@ import {
   disableButton,
 } from "../scripts/validation.js";
 import Api from "../utils/Api.js";
+import { handleSubmit } from "../utils/utils.js";
 
 let selectedCard = null;
 let selectedCardId = null;
@@ -224,93 +225,58 @@ newPostCloseBtn.addEventListener("click", function () {
 // Form submit handlers
 
 function handleEditProfileSubmit(evt) {
-  evt.preventDefault();
-  setButtonLoading(
-    editProfileForm.querySelector(".modal__save-btn"),
-    true,
-    "Save",
-    "Saving..."
-  );
-  api
-    .editUserInfo({
-      name: editProfileNameInput.value,
-      about: editProfileDescriptionInput.value,
-    })
-    .then((res) => {
-      profileNameEl.textContent = res.name;
-      profileDescriptionEl.textContent = res.about;
-      closeModal(editProfileModal);
-    })
-    .catch((err) => {
-      console.error(`Error: ${err}`);
-    })
-    .finally(() => {
-      setButtonLoading(
-        editProfileForm.querySelector(".modal__save-btn"),
-        false,
-        "Save",
-        "Saving..."
-      );
-    });
+  function makeRequest() {
+    return api
+      .editUserInfo({
+        name: editProfileNameInput.value,
+        about: editProfileDescriptionInput.value,
+      })
+      .then((user) => {
+        profileNameEl.textContent = user.name;
+        profileDescriptionEl.textContent = user.about;
+        closeModal(editProfileModal);
+      });
+  }
+  handleSubmit(makeRequest, evt, "Saving...");
 }
-
 editProfileForm.addEventListener("submit", handleEditProfileSubmit);
 
 function handleAddCardSubmit(evt) {
-  evt.preventDefault();
-  setButtonLoading(newPostSubmitBtn, true, "Save", "Saving...");
-
-  api
-    .addNewCard({
-      name: newPostNameInput.value,
-      link: newPostLinkInput.value,
-    })
-    .then((res) => {
-      const cardElement = getCardElement(res);
-      cardList.prepend(cardElement);
-      disableButton(newPostSubmitBtn, settings);
-      newPostForm.reset();
-      resetValidation(
-        newPostForm,
-        [newPostNameInput, newPostLinkInput],
-        settings
-      );
-      closeModal(newPostModal);
-    })
-    .catch((err) => {
-      console.error(`Error: ${err}`);
-    })
-    .finally(() => {
-      setButtonLoading(newPostSubmitBtn, false, "Save", "Saving...");
-    });
+  function makeRequest() {
+    return api
+      .addNewCard({
+        name: newPostNameInput.value,
+        link: newPostLinkInput.value,
+      })
+      .then((card) => {
+        cardList.prepend(getCardElement(card));
+        closeModal(newPostModal);
+        // handleSubmit will reset the form; do your extras:
+        disableButton(newPostSubmitBtn, settings);
+        resetValidation(
+          newPostForm,
+          [newPostNameInput, newPostLinkInput],
+          settings
+        );
+      });
+  }
+  handleSubmit(makeRequest, evt, "Saving...");
 }
+newPostForm.addEventListener("submit", handleAddCardSubmit);
 
 function handleEditAvatarSubmit(evt) {
-  evt.preventDefault();
-  setButtonLoading(editAvatarSubmitBtn, true, "Save", "Saving...");
-
-  api
-    .editUserAvatar({
-      name: profileNameEl.textContent,
-      avatar: editAvatarInput.value,
-    })
-    .then((res) => {
-      profileAvatarEl.src = res.avatar;
-      profileAvatarEl.alt = res.name;
-
-      disableButton(editAvatarSubmitBtn, settings);
-      editAvatarForm.reset();
-      resetValidation(editAvatarForm, [editAvatarInput], settings);
-      closeModal(editAvatarModal);
-
-      disableButton(editAvatarSubmitBtn, settings);
-    })
-    .catch((err) => {
-      console.error(`Error: ${err}`);
-    })
-    .finally(() => {
-      setButtonLoading(editAvatarSubmitBtn, false, "Save", "Saving...");
-    });
+  function makeRequest() {
+    return api
+      .editUserAvatar({ avatar: editAvatarInput.value })
+      .then((user) => {
+        profileAvatarEl.src = user.avatar;
+        profileAvatarEl.alt = user.name;
+        closeModal(editAvatarModal);
+        disableButton(editAvatarSubmitBtn, settings);
+        resetValidation(editAvatarForm, [editAvatarInput], settings);
+      });
+  }
+  handleSubmit(makeRequest, evt, "Saving...");
 }
 editAvatarForm.addEventListener("submit", handleEditAvatarSubmit);
 
@@ -331,26 +297,21 @@ deletePostCancelBtn?.addEventListener("click", () =>
   closeModal(deletePostModal)
 );
 
-function handleDeleteSubmit(e) {
-  e.preventDefault();
+function handleDeleteSubmit(evt) {
   if (!selectedCardId) return;
 
-  setButtonLoading(deletePostDeleteBtn, true, "Delete", "Deleting...");
-
-  api
-    .deleteCard(selectedCardId)
-    .then(() => {
+  function makeRequest() {
+    return api.deleteCard(selectedCardId).then(() => {
       selectedCard?.remove();
       selectedCard = null;
       selectedCardId = null;
       closeModal(deletePostModal);
-    })
-    .catch((err) => console.error(`Error: ${err}`))
-    .finally(() => {
-      setButtonLoading(deletePostDeleteBtn, false, "Delete", "Deleting...");
     });
-}
+  }
 
-newPostForm.addEventListener("submit", handleAddCardSubmit);
+  // Shows "Deleting..." on the clicked button, then restores original text
+  handleSubmit(makeRequest, evt, "Deleting...");
+}
+deletePostForm.addEventListener("submit", handleDeleteSubmit);
 
 enableValidation(settings);
