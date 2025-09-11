@@ -4,16 +4,20 @@ An image sharing site.
 
 ## Description
 
-This is a image sharing site where users can edit their information and add photos.
+This is a image sharing site where users can edit their user information, change their avatar and add/delete posts.
 
 Marvel at it's beauty
 
-![Image of Spots page.](./images/spots-page.png)
+![Image of Spots page.](./src/images/spots-page-v2.png)
 
 ## Tech Stack
 
 - HTML
 - CSS
+- Vanilla JS
+- Object Oriented Programing
+- Asychronus JS
+- REST API
 - Responsive Design
 
 ## Deployment
